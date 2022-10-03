@@ -4,6 +4,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.function.BiFunction;
+import java.util.function.Function;
 
 /**
  * It's time to do some data manipulation!
@@ -50,7 +51,16 @@ public class c2_TransformingSequence extends TransformingSequenceBase {
         Flux<Integer> numbersFlux = numerical_service_2();
 
         //todo: do your changes here
-        Flux<String> resultSequence = null;
+        Flux<String> resultSequence = numbersFlux.map(new Function<Integer, String>() {
+            @Override
+            public String apply(Integer integer) {
+                if (integer<0) {
+                    return "<";
+                } else if (integer>0) {
+                    return ">";
+                } else return "=";
+            }
+        });
 
         //don't change code below
         StepVerifier.create(resultSequence)
@@ -113,12 +123,7 @@ public class c2_TransformingSequence extends TransformingSequenceBase {
     @Test
     public void sum_each_successive() {
         Flux<Integer> sumEach = numerical_service()
-                .scan(new BiFunction<Integer, Integer, Integer>() {
-                    @Override
-                    public Integer apply(Integer integer, Integer integer2) {
-                        return integer+integer2;
-                    }
-                })
+                .scan(Integer::sum)
                 ;
 
         StepVerifier.create(sumEach)
@@ -136,7 +141,7 @@ public class c2_TransformingSequence extends TransformingSequenceBase {
     @Test
     public void sequence_starts_with_zero() {
         Flux<Integer> result = numerical_service()
-                //todo: change this line only
+                .startWith(0);
                 ;
 
         StepVerifier.create(result)
