@@ -154,7 +154,7 @@ public class c1_Introduction extends IntroductionBase {
         CopyOnWriteArrayList<String> companyList = new CopyOnWriteArrayList<>();
 
         fortuneTop5()
-        //todo: change this line only
+                .doOnNext(companyList::add).doOnComplete(()->serviceCallCompleted.set(true)).subscribe()
         ;
 
         Thread.sleep(1000);

@@ -3,6 +3,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.util.function.BiFunction;
+
 /**
  * It's time to do some data manipulation!
  *
@@ -27,7 +29,7 @@ public class c2_TransformingSequence extends TransformingSequenceBase {
     @Test
     public void transforming_sequence() {
         Flux<Integer> numbersFlux = numerical_service()
-                //todo change only this line
+                .map(x->x+1)
                 ;
 
         //StepVerifier is used for testing purposes
@@ -65,7 +67,7 @@ public class c2_TransformingSequence extends TransformingSequenceBase {
     @Test
     public void cast() {
         Flux<String> numbersFlux = object_service()
-                .map(i -> (String) i); //todo: change this line only
+                .cast(String.class); //todo: change this line only
 
 
         StepVerifier.create(numbersFlux)
@@ -79,7 +81,7 @@ public class c2_TransformingSequence extends TransformingSequenceBase {
      */
     @Test
     public void maybe() {
-        Mono<String> result = maybe_service()
+        Mono<String> result = maybe_service().defaultIfEmpty("no results")
                 //todo: change this line only
                 ;
 
@@ -94,8 +96,8 @@ public class c2_TransformingSequence extends TransformingSequenceBase {
      */
     @Test
     public void sequence_sum() {
-        Mono<Integer> sum = null;
-        numerical_service()
+        Mono<Integer> sum =
+        numerical_service().reduce(Integer::sum)
         //todo: do your changes here
         ;
 
@@ -111,7 +113,12 @@ public class c2_TransformingSequence extends TransformingSequenceBase {
     @Test
     public void sum_each_successive() {
         Flux<Integer> sumEach = numerical_service()
-                //todo: do your changes here
+                .scan(new BiFunction<Integer, Integer, Integer>() {
+                    @Override
+                    public Integer apply(Integer integer, Integer integer2) {
+                        return integer+integer2;
+                    }
+                })
                 ;
 
         StepVerifier.create(sumEach)
