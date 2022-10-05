@@ -36,7 +36,7 @@ public class c4_LifecycleHooks extends LifecycleHooksBase {
     public void no_subscription_no_gains() {
         CopyOnWriteArrayList<String> hooksTriggered = new CopyOnWriteArrayList<>();
 
-        Flux<Integer> temperatureFlux = room_temperature_service()
+        Flux<Integer> temperatureFlux = room_temperature_service().doOnSubscribe(x->hooksTriggered.add("subscribe"))
                 //todo: change this line only
                 ;
 
@@ -55,7 +55,7 @@ public class c4_LifecycleHooks extends LifecycleHooksBase {
     public void be_there_early() {
         CopyOnWriteArrayList<String> hooksTriggered = new CopyOnWriteArrayList<>();
 
-        Flux<Integer> temperatureFlux = room_temperature_service()
+        Flux<Integer> temperatureFlux = room_temperature_service().
                 //todo: change this line only
                 ;
 
