@@ -3,6 +3,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.util.function.Predicate;
+
 /**
  * Sequence may produce many elements, but we are not always interested in all of them. In this chapter we will learn
  * how to filter elements from a sequence.
@@ -27,7 +29,12 @@ public class c3_FilteringSequence extends FilteringSequenceBase {
     @Test
     public void girls_are_made_of_sugar_and_spice() {
         Flux<String> shortListed = popular_girl_names_service()
-                //todo: change this line only
+                .filter(new Predicate<String>() {
+                    @Override
+                    public boolean test(String s) {
+                        return s.length()<=4;
+                    }
+                })
                 ;
 
         StepVerifier.create(shortListed)
@@ -42,6 +49,7 @@ public class c3_FilteringSequence extends FilteringSequenceBase {
     @Test
     public void needle_in_a_haystack() {
         Flux<Object> strings = mashed_data_service()
+                .
                 //todo: change this line only
                 ;
 
