@@ -1,4 +1,5 @@
 import org.junit.jupiter.api.*;
+import org.reactivestreams.Publisher;
 import reactor.blockhound.BlockHound;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Hooks;
@@ -42,7 +43,7 @@ public class c6_CombiningPublishers extends CombiningPublishersBase {
         //todo: feel free to change code as you need
         Mono<String> currentUserEmail = null;
         Mono<String> currentUserMono = getCurrentUser();
-        getUserEmail(null);
+        currentUserEmail=currentUserMono.flatMap(this::getUserEmail);
 
         //don't change below this line
         StepVerifier.create(currentUserEmail)
@@ -61,7 +62,7 @@ public class c6_CombiningPublishers extends CombiningPublishersBase {
     public void task_executor() {
         //todo: feel free to change code as you need
         Flux<Void> tasks = null;
-        taskExecutor();
+        tasks = taskExecutor().flatMap( Mono::flux);
 
         //don't change below this line
         StepVerifier.create(tasks)
